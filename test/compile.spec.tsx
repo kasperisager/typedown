@@ -1,7 +1,8 @@
+import * as test from "tape";
 import { jsx } from "../src/jsx";
 import { compile } from "../src/compile";
-const { test } = require("tap");
 
-test("Compiles a heading", async (t: any) => {
+test("Compiles a heading", t => {
   const heading = <heading depth={1}>Howdy!</heading>;
+  t.end();
 });

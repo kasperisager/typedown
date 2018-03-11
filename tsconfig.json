@@ -2,8 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2015",
+    "outDir": "dist",
     "jsx": "react",
     "jsxFactory": "jsx",
+    "declaration": true,
     "strict": true
   },
   "include": [

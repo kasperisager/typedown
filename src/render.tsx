@@ -74,7 +74,7 @@ export function renderFunction(reflection: TypeDoc.DeclarationReflection) {
 }
 
 export function renderSignature(reflection: TypeDoc.SignatureReflection) {
-  const { name, typeParameters, comment } = reflection;
+  const { name, type, typeParameters, parameters, comment } = reflection;
 
   return [
     <paragraph>
@@ -87,7 +87,17 @@ export function renderSignature(reflection: TypeDoc.SignatureReflection) {
         ]),
         ">"
       ]}
-      ( )
+      (
+      {parameters.map((reflection, i) => [
+        i === 0 ? "" : ", ",
+        renderParameter(reflection)
+      ])}
+      ):{" "}
+      {type instanceof TypeDoc.ReferenceType ? (
+        renderType(type.reflection)
+      ) : (
+        <strong>{type.toString()}</strong>
+      )}
     </paragraph>,
 
     comment ? parse(comment.shortText + "\n\n" + comment.text).children : null,
@@ -127,5 +137,11 @@ export function renderType(reflection: TypeDoc.Reflection) {
 }
 
 export function renderParameter(reflection: TypeDoc.ParameterReflection) {
-  console.log(reflection);
+  const { name, type } = reflection;
+
+  if (type instanceof TypeDoc.ReferenceType) {
+    return [name, ": ", renderType(type.reflection)];
+  }
+
+  return [name, ": ", <strong>{type.toString()}</strong>];
 }

@@ -2,7 +2,7 @@
 
 Defined in [foo.ts:13](foo.ts)
 
-**foo**&lt;**T**, **U** extends [**Return**](foo.ts)>( )
+**foo**&lt;**T**, **U** extends [**Return**](foo.ts)>(bar: **T**): **U**
 
 This is a description of `foo()`.
 

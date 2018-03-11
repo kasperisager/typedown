@@ -3,23 +3,26 @@
   "version": "1.0.0",
   "description": "Turn TypeScript projects into beautiful Markdown documentation",
   "main": "dist/index.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/kasperisager/typedown",
   "author": "Kasper Isager <kasperisager@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "prepare": "tsc --outDir dist",
+    "prepare": "tsc",
     "test": "ts-node test"
   },
   "dependencies": {
+    "@types/make-dir": "^1.0.3",
+    "@types/tape": "^4.2.32",
+    "make-dir": "^1.2.0",
     "remark-parse": "^5.0.0",
     "remark-stringify": "^5.0.0",
+    "tape": "^4.9.0",
     "tsconfig": "^7.0.0",
     "typedoc": "^0.10.0",
     "vfile": "^2.3.0"
   },
   "devDependencies": {
-    "tap": "^11.1.1",
     "ts-node": "^5.0.0",
     "typescript": "^2.7.2"
   }

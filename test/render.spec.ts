@@ -1,22 +1,40 @@
+import * as path from "path";
+import * as fs from "fs";
+import * as test from "tape";
+import * as makeDir from "make-dir";
 import { reflect } from "../src/reflect";
 import { render } from "../src/render";
-const { test } = require("tap");
 
 const { keys } = Object;
 
 function indent(string: string, count: number = 4): string {
-	return string.replace(/^(?!\s*$)/mg, ' '.repeat(count));
+  return string.replace(/^(?!\s*$)/gm, " ".repeat(count));
 }
 
-test("Renders documentation", async (t: any) => {
+async function write(filename: string, data: string): Promise<void> {
+  await makeDir(path.dirname(filename));
+
+  return new Promise<void>((resolve, reject) => {
+    fs.writeFile(
+      filename,
+      data,
+      "utf8",
+      err => (err ? reject(err) : resolve())
+    );
+  });
+}
+
+test("Renders documentation", async t => {
   const reflection = await reflect(require.resolve("./fixtures/foo.ts"));
 
   if (reflection) {
     const documentation = render(reflection);
 
-    for (const key of keys(documentation)) {
-      const file = documentation[key];
-      console.log(key + "\n\n" + indent(file, 4));
+    for (const path of keys(documentation)) {
+      const data = documentation[path];
+      await write(`test/snapshots/${path}`, data);
     }
   }
+
+  t.end();
 });
