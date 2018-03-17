@@ -1,7 +1,8 @@
 {
   "name": "typedown",
   "version": "1.0.0",
-  "description": "Turn TypeScript projects into beautiful Markdown documentation",
+  "description":
+    "Turn TypeScript projects into beautiful Markdown documentation",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/kasperisager/typedown",
@@ -12,18 +13,20 @@
     "test": "ts-node test"
   },
   "dependencies": {
-    "@types/make-dir": "^1.0.3",
-    "@types/tape": "^4.2.32",
-    "make-dir": "^1.2.0",
     "remark-parse": "^5.0.0",
     "remark-stringify": "^5.0.0",
-    "tape": "^4.9.0",
     "tsconfig": "^7.0.0",
     "typedoc": "^0.10.0",
+    "typescript": "^2.7.2",
     "vfile": "^2.3.0"
   },
   "devDependencies": {
-    "ts-node": "^5.0.0",
-    "typescript": "^2.7.2"
+    "@types/del": "^3.0.0",
+    "@types/make-dir": "^1.0.3",
+    "@types/tape": "^4.2.32",
+    "del": "^3.0.0",
+    "make-dir": "^1.2.0",
+    "tape": "^4.9.0",
+    "ts-node": "^5.0.0"
   }
 }

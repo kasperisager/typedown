@@ -11,6 +11,11 @@ declare namespace JSX {
     paragraph: {};
 
     /**
+     * @see https://github.com/syntax-tree/mdast#blockquote
+     */
+    blockquote: {};
+
+    /**
      * @see https://github.com/syntax-tree/mdast#heading
      */
     heading: {
@@ -43,6 +48,16 @@ declare namespace JSX {
           loose?: boolean;
           checked?: boolean;
         };
+
+    /**
+     * @see https://github.com/syntax-tree/mdast#thematicbreak
+     */
+    thematicBreak: {};
+
+    /**
+     * @see https://github.com/syntax-tree/mdast#emphasis
+     */
+    emphasis: {};
 
     /**
      * @see https://github.com/syntax-tree/mdast#strong

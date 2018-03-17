@@ -2,6 +2,7 @@ import * as path from "path";
 import * as fs from "fs";
 import * as test from "tape";
 import * as makeDir from "make-dir";
+import * as del from "del";
 import { reflect } from "../src/reflect";
 import { render } from "../src/render";
 
@@ -25,7 +26,9 @@ async function write(filename: string, data: string): Promise<void> {
 }
 
 test("Renders documentation", async t => {
-  const reflection = await reflect(require.resolve("./fixtures/foo.ts"));
+  await del('test/snapshots');
+
+  const reflection = await reflect(path.join(__dirname, "fixtures"));
 
   if (reflection) {
     const documentation = render(reflection);

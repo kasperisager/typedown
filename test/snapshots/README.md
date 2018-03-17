@@ -2,4 +2,5 @@
 
 ## Functions
 
--   [foo](functions/foo.md)
+-   [transform](functions/transform.md)
+-   [stringify](functions/stringify.md)

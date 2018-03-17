@@ -3,7 +3,7 @@
 const { assign } = Object;
 const { isArray } = Array;
 
-type Child = JSX.Element | string | number | boolean;
+export type Child = JSX.Element | string | number | boolean;
 
 function flatten(array: Array<any>): Array<any> {
   const flattened = [];

@@ -5,6 +5,10 @@ import { jsx } from "./jsx";
 import { compile } from "./compile";
 import { parse } from "./parse";
 
+import { renderClass } from "./render/class";
+import { renderFunction } from "./render/function";
+import { renderProject } from "./render/project";
+
 export type Documentation = { [path: string]: string };
 
 export function render(
@@ -19,129 +23,22 @@ export function render(
     );
 
     for (const reflection of functions) {
-      documentation[`functions/${reflection.name}.md`] = compile(
+      documentation[`functions/${reflection.name.toLowerCase()}.md`] = compile(
         renderFunction(reflection as TypeDoc.DeclarationReflection)
+      );
+    }
+
+    const classes = reflection.getReflectionsByKind(
+      TypeDoc.ReflectionKind.Class
+    );
+
+
+    for (const reflection of classes) {
+      documentation[`classes/${reflection.name.toLowerCase()}.md`] = compile(
+        renderClass(reflection as TypeDoc.DeclarationReflection)
       );
     }
   }
 
   return documentation;
-}
-
-export function renderProject(
-  reflection: TypeDoc.ProjectReflection
-): JSX.Element {
-  const functions = reflection.getReflectionsByKind(
-    TypeDoc.ReflectionKind.Function
-  );
-
-  return (
-    <root>
-      <heading depth={1}>{reflection.name}</heading>
-
-      {functions.length && <heading depth={2}>Functions</heading>}
-
-      {functions.length && (
-        <list ordered={false}>
-          {functions.map(({ name }) => (
-            <listItem>
-              <link url={`functions/${name}.md`}>{name}</link>
-            </listItem>
-          ))}
-        </list>
-      )}
-    </root>
-  );
-}
-
-export function renderFunction(reflection: TypeDoc.DeclarationReflection) {
-  const [source] = reflection.sources;
-
-  return (
-    <root>
-      <heading depth={1}>Function: {reflection.name}</heading>
-
-      <paragraph>
-        {"Defined in "}
-        <link url={source.fileName}>
-          {source.fileName}:{source.line}
-        </link>
-      </paragraph>
-
-      {reflection.signatures.map(renderSignature)}
-    </root>
-  );
-}
-
-export function renderSignature(reflection: TypeDoc.SignatureReflection) {
-  const { name, type, typeParameters, parameters, comment } = reflection;
-
-  return [
-    <paragraph>
-      <strong>{name}</strong>
-      {typeParameters.length && [
-        "<",
-        typeParameters.map((reflection, i) => [
-          i === 0 ? "" : ", ",
-          renderTypeParameter(reflection)
-        ]),
-        ">"
-      ]}
-      (
-      {parameters.map((reflection, i) => [
-        i === 0 ? "" : ", ",
-        renderParameter(reflection)
-      ])}
-      ):{" "}
-      {type instanceof TypeDoc.ReferenceType ? (
-        renderType(type.reflection)
-      ) : (
-        <strong>{type.toString()}</strong>
-      )}
-    </paragraph>,
-
-    comment ? parse(comment.shortText + "\n\n" + comment.text).children : null,
-
-    comment && comment.tags.length
-      ? [
-          <heading depth={2}>Examples</heading>,
-          comment.tags.filter(tag => tag.tagName === "example").map(tag => (
-            <paragraph>
-              <code lang="tsx" value={tag.text.trim()} />
-            </paragraph>
-          ))
-        ]
-      : null
-  ];
-}
-
-export function renderTypeParameter(
-  reflection: TypeDoc.TypeParameterReflection
-) {
-  const { name, type } = reflection;
-
-  if (type instanceof TypeDoc.ReferenceType) {
-    return [<strong>{name}</strong>, " extends ", renderType(type.reflection)];
-  }
-
-  return <strong>{name}</strong>;
-}
-
-export function renderType(reflection: TypeDoc.Reflection) {
-  const [source] = reflection.sources;
-  return (
-    <link url={`${source.fileName}`}>
-      <strong>{reflection.name}</strong>
-    </link>
-  );
-}
-
-export function renderParameter(reflection: TypeDoc.ParameterReflection) {
-  const { name, type } = reflection;
-
-  if (type instanceof TypeDoc.ReferenceType) {
-    return [name, ": ", renderType(type.reflection)];
-  }
-
-  return [name, ": ", <strong>{type.toString()}</strong>];
 }
